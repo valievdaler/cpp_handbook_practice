@@ -98,10 +98,43 @@ class DoubleList
         newNode->next=nextNode;
         newNode->prev=cur;
         cur->next=newNode;
+    }
 
+    void remove(int val)
+    {
+        Node*cur=head;
+        while(cur!=nullptr && cur->val!=val)
+        {
+            cur=cur->next;
+        }
+        if(cur==nullptr)return;
 
+        if(cur==head && head!=nullptr)
+        {
+            head=head->next;
+            if(head!=nullptr){head->prev=nullptr;}
 
+        }
+        else
+        {
+            cur->prev->next=cur->next;
+            if(cur->next!=nullptr)cur->next->prev=cur->prev;
+        }
 
+        delete cur;
+    }
+
+    void clear()
+    {
+        Node*cur=head;
+        while(cur!=nullptr)
+        {
+            Node*nextNode=cur->next;
+            delete cur;
+            cur=nextNode;
+
+        }
+        head=nullptr;
     }
 
     void print()
@@ -109,9 +142,40 @@ class DoubleList
         Node*cur=head;
         while(cur!=nullptr)
         {
-            std::cout<<cur->val;
+            std::cout<<cur->val<<" ";
             cur=cur->next;
         }
+    }
+
+    void print_backward()
+    {
+        Node*cur=head;
+        if(head==nullptr)return;
+
+        while(cur->next!=nullptr)
+        {
+            cur=cur->next;
+        }
+
+        while(cur!=nullptr)
+        {
+            std::cout<<cur->val<<" ";
+            cur=cur->prev;
+        }
+    }
+
+    bool find(int val)
+    {
+        Node*cur=head;
+        if(head==nullptr)return false;
+        
+        while(cur->next!=nullptr && cur ->next->val!=val)
+        {
+            cur=cur->next;
+        }
+
+        if(cur==nullptr)return false;
+        else return true;
     }
 };
 
@@ -129,6 +193,29 @@ int main()
     {
         lst.print();
     }
+    std::cout<<std::endl;
+    lst.remove(13);
+    std::cout<<"Remove function is called!"<<std::endl;
+    lst.print();
+    std::cout<<std::endl;
+    lst.clear();
+    std::cout<<"Clear is called!"<<std::endl;
+    lst.print();
+
+    lst.push_back(1);
+    lst.push_back(2);
+    lst.print();
+    std::cout<<"Print is called!\n";
+    
+    lst.push_back(3);
+
+    lst.push_back(4);
+    
+    lst.print_backward();
+    std::cout<<"Print backward is called!\n";
+
+    std::cout<<lst.find(2);
+
 
     return 0;
 }
