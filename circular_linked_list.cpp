@@ -22,6 +22,10 @@ Clist()
 {
     head=nullptr;
 }
+~Clist()
+{
+    Clear();
+}
 
 
 void append(int val)
@@ -46,6 +50,12 @@ void append(int val)
 
 void display()
 {
+
+    if(head==nullptr)
+    {
+        std::cout<<"List is Empty\n";
+        return;
+    }
     Node*temp=head;
     
     do{
@@ -137,19 +147,89 @@ bool search(int val)
     return false;
     
 }
+
+bool isEmpty()
+{
+
+    if(head==nullptr)
+    {
+        return true;
+    }
+    else return false;
+}
+
+void Size()
+{
+    int count=0;
+    if(head==nullptr)
+    {
+        std::cout<<"The list is Emptry!\n";
+        return;
+    }
+
+    Node* temp=head;
+    do
+    {
+        temp=temp->next;
+        count++;
+
+    } while (temp!=head);
+    std::cout<<"\n"<<count<<" elements in the list \n";
+}
+
+void Clear()
+{
+    if(head==nullptr)
+    {
+        std::cout<<"List is Emptry\n";
+        return;
+    }
+
+    Node*last=head;
+    while(last->next!=head)
+    {
+        last=last->next;
+    }
+    last->next=nullptr;
+
+    Node*cur=head;
+    while(cur!=nullptr)
+    {
+        Node*temp=cur->next;
+        delete cur;
+        cur=temp;
+    }
+
+    head=nullptr;
+
+}
+
 };
 
 
 int main()
 {
     Clist lst;
+    if(lst.isEmpty())
+    {
+        std::cout<<"List is Empty\n";
+    }
+    
+    
     lst.append(1);
     lst.append(2);
     lst.prepend(0);
+    std::cout<<"It is display before remove\n";
     lst.display();
     lst.remove(0);
+    std::cout<<"It is display after remove\n";
     lst.display();
     std::cout<<lst.search(1);
+    lst.Size();
+    
+
+    lst.Clear();
+    lst.display();
     
     return 0;
 }
