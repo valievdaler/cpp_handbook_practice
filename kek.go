@@ -1,30 +1,18 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"log"
-	"net/http"
-	"sync"
+	"strings"
 )
 
-var count int
-var mutex sync.Mutex
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	mutex.Lock()
-	count++
-	mutex.Unlock()
-	fmt.Fprintf(w, "URL.path=%q\n", r.URL.Path)
-}
-
-func counter(w http.ResponseWriter, r *http.Request) {
-	mutex.Lock()
-	fmt.Fprintf(w, "Count %d\n", count)
-	mutex.Unlock()
-}
+var n = flag.Bool("n", false, "omit trailing newline")
+var sep = flag.String("s", " ", "separator")
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/count", counter)
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+	flag.Parse()
+	fmt.Print(strings.Join(flag.Args(), *sep))
+	if !*n {
+		fmt.Println()
+	}
 }
